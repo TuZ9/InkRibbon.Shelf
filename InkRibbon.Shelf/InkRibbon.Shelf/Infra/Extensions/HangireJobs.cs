@@ -12,7 +12,7 @@ namespace InkRibbon.Shelf.Infra.Extensions
         {
             using var scope = services.CreateScope();
             var service = scope.ServiceProvider.GetRequiredService<ISteamGamesService>();
-            await service.GetSteamId();
+            await service.PublishGames();
             //BackgroundJob.Enqueue(() => service.BuildBase());
         }
     }

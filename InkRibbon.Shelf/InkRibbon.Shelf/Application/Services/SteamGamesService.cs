@@ -20,7 +20,7 @@ namespace InkRibbon.Shelf.Application.Services
             _steamClient = steamClient;
         }
 
-        public async Task GetSteamId()
+        public async Task PublishGames()
         {
             try
             {
