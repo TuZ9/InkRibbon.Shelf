@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35919.96 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InkRibbon.Shelf", "InkRibbon.Shelf\InkRibbon.Shelf.csproj", "{4DAC1487-4C96-4CFE-9052-F42D6B55329A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4DAC1487-4C96-4CFE-9052-F42D6B55329A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DAC1487-4C96-4CFE-9052-F42D6B55329A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DAC1487-4C96-4CFE-9052-F42D6B55329A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DAC1487-4C96-4CFE-9052-F42D6B55329A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2943A6A1-99DC-45D2-8DEF-5BC49BAA623B}
+	EndGlobalSection
+EndGlobal
