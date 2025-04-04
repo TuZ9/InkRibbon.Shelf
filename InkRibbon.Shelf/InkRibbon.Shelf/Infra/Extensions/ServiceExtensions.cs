@@ -19,7 +19,7 @@ namespace InkRibbon.Shelf.Infra.Extensions
             return services
                 .AddScoped(_ => new AuroraDbContext())
                 .AddScoped<IUserRepository, UserRepository>()
-                .AddScoped<ISteamGamesService, SteamGamesService>();
+                .AddSingleton<ISteamGamesService, SteamGamesService>();
         }
     }
 }

@@ -1,5 +1,6 @@
 using InkRibbon.Shelf.Application.Static;
 using InkRibbon.Shelf.Infra.Extensions;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 RunTimeConfig.SetConfigs(builder.Configuration);
@@ -28,11 +29,15 @@ builder.WebHost.UseKestrel(so =>
 });
 builder.Services.AddEndpointsApiExplorer();
 
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console(outputTemplate: "{Timestamp:HH:mm:ss} [{Level}] - {Message}{NewLine}{Exception}")
+    .Enrich.WithDemystifiedStackTraces()
+    .Enrich.FromLogContext()
+    .CreateLogger();
 
 var app = builder.Build();
 var serviceProvider = builder.Services.BuildServiceProvider();
 HangireJobs.RunHangFireJob(serviceProvider);
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
