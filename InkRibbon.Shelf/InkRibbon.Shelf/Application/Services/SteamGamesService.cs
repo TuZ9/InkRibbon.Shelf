@@ -43,6 +43,7 @@ namespace InkRibbon.Shelf.Application.Services
                         var mensagem = Encoding.UTF8.GetString(body);
                         var msg = JsonSerializer.Deserialize<Apps>(mensagem);
 
+<<<<<<< HEAD
                         Console.WriteLine($"[x] Mensagem recebida: {mensagem}");
                         var game = await _steamGamesClient.GetVariableAsync($"/api/appdetails?appids={msg.appid}");
                         var a = game;
@@ -57,6 +58,35 @@ namespace InkRibbon.Shelf.Application.Services
                 }
             }
             catch (Exception)
+            {
+                throw;
+=======
+                await channel.BasicConsumeAsync(queue: "fila.teste",
+                                        autoAck: true,
+                                        consumer: consumer);
+>>>>>>> 61c2cc951c143268cabe017ad7ba45543b0926a4
+            }
+        }
+        public async Task UpdateGames()
+        {
+            try
+            {
+                var list = new List<Game>();
+                var games = await _steamAppClient.GetAsync($"/ISteamApps/GetAppList/v2/");
+                foreach (var g in games.applist.apps)
+                {
+                    var game = await _steamGamesClient.GetDicAsync($"/api/appdetails?appids={g.appid}");
+                    //var game = await _steamGamesClient.GetDicAsync($"/api/appdetails?appids=3409970");
+                    Console.WriteLine($"{g.appid}");
+                    var a = game.FirstOrDefault();
+                    if (a.Value.success == true)
+                    {
+                        list.Add(a.Value);
+                    }
+                }
+                Console.WriteLine($"count de jogos {list.Count}");
+            }
+            catch (Exception ex)
             {
                 throw;
             }

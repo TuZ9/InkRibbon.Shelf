@@ -18,8 +18,11 @@ namespace InkRibbon.Shelf.Infra.Extensions
             services.AddHttpClient("SteamGame",
                client => { client.BaseAddress = new Uri(RunTimeConfig.SteamEndpointGame); });
 
+            services.AddHttpClient("SteamStore",
+               client => { client.BaseAddress = new Uri(RunTimeConfig.SteamEndpointGame); });
+
             services.AddSingleton<ISteamGamesApiClient, SteamGamesApiClient>(x =>
-                new SteamGamesApiClient(x.GetService<IHttpClientFactory>()!, steamLogger, "SteamGame"));
+                new SteamGamesApiClient(x.GetService<IHttpClientFactory>()!, steamLogger, "SteamStore"));
 
             services.AddSingleton<ISteamAppApiClient, SteamAppApiClient>(x =>
                 new SteamAppApiClient(x.GetService<IHttpClientFactory>()!, appLogger, "Steam"));

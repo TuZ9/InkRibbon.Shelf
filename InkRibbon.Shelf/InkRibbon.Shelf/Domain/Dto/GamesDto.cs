@@ -4,11 +4,11 @@ namespace InkRibbon.Shelf.Domain.Dto
 {
     public class GamesDto
     {
-        public Root? root { get; set; }
+        public required Root game { get; set; }
     }
     public class Game
     {
-        public bool? success { get; set; }
+        public required bool success { get; set; }
         public Data? data { get; set; }
     }
 
@@ -46,7 +46,7 @@ namespace InkRibbon.Shelf.Domain.Dto
         public string? type { get; set; }
         public string? name { get; set; }
         public int steam_appid { get; set; }
-        public int required_age { get; set; }
+        //public string? required_age { get; set; }
         public bool is_free { get; set; }
         public List<int>? dlc { get; set; }
         public string? detailed_description { get; set; }
@@ -57,7 +57,11 @@ namespace InkRibbon.Shelf.Domain.Dto
         public string? capsule_image { get; set; }
         public string? capsule_imagev5 { get; set; }
         public string? website { get; set; }
+<<<<<<< HEAD
         public PcRequirements? pc_requirements { get; set; }
+=======
+        //public PcRequirements? pc_requirements { get; set; }
+>>>>>>> 61c2cc951c143268cabe017ad7ba45543b0926a4
         //public MacRequirements? mac_requirements { get; set; }
         //public LinuxRequirements? linux_requirements { get; set; }
         public List<string>? developers { get; set; }
@@ -169,7 +173,11 @@ namespace InkRibbon.Shelf.Domain.Dto
     }
 
     public class Root
+<<<<<<< HEAD
     {       
+=======
+    {
+>>>>>>> 61c2cc951c143268cabe017ad7ba45543b0926a4
         public Game game { get; set; }
     }
 
