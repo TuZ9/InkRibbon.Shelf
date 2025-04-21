@@ -1,4 +1,5 @@
 ﻿using InkRibbon.Shelf.Domain.Interfaces.ApiClientService;
+using System;
 using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
@@ -36,6 +37,33 @@ namespace InkRibbon.Shelf.Application.Services
             }
         }
 
+        public async Task<Dictionary<string, TEntity>> GetDicAsync(string url)
+        {
+
+            try
+            {
+                using var httpResponseMessage = await _httpClient.GetAsync(url);
+                _logger.LogInformation("Get from url: {0}", url);
+
+                if (httpResponseMessage.IsSuccessStatusCode)
+                {
+                    var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+                    var contentString = await httpResponseMessage.Content.ReadAsStringAsync();
+                    
+                    var result = JsonSerializer.Deserialize<Dictionary<string,TEntity>>(contentStream);
+
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Resourse Server {0} return an error {1}", url, ex.Message);
+                throw new Exception(ex.Message);
+            }
+            return null;
+
+        }
+
         public async Task<TEntity> GetAsync(string url)
         {
             
@@ -47,6 +75,7 @@ namespace InkRibbon.Shelf.Application.Services
                 if (httpResponseMessage.IsSuccessStatusCode)
                 {
                     var contentStream = await httpResponseMessage.Content.ReadAsStreamAsync();
+
                     var result = JsonSerializer.Deserialize<TEntity>(contentStream);
                     return result;
                 }

@@ -2,7 +2,7 @@
 
 namespace InkRibbon.Shelf.Domain.Interfaces.ApiClientService
 {
-    public interface ISteamGamesApiClient : IServiceClientBase<GamesDto>
+    public interface ISteamGamesApiClient : IServiceClientBase<Game>
     {
     }
 }

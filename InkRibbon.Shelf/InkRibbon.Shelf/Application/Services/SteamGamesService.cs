@@ -44,8 +44,32 @@ namespace InkRibbon.Shelf.Application.Services
                 };
 
                 await channel.BasicConsumeAsync(queue: "fila.teste",
-                                        autoAck: true,  
+                                        autoAck: true,
                                         consumer: consumer);
+            }
+        }
+        public async Task UpdateGames()
+        {
+            try
+            {
+                var list = new List<Game>();
+                var games = await _steamAppClient.GetAsync($"/ISteamApps/GetAppList/v2/");
+                foreach (var g in games.applist.apps)
+                {
+                    var game = await _steamGamesClient.GetDicAsync($"/api/appdetails?appids={g.appid}");
+                    //var game = await _steamGamesClient.GetDicAsync($"/api/appdetails?appids=3409970");
+                    Console.WriteLine($"{g.appid}");
+                    var a = game.FirstOrDefault();
+                    if (a.Value.success == true)
+                    {
+                        list.Add(a.Value);
+                    }
+                }
+                Console.WriteLine($"count de jogos {list.Count}");
+            }
+            catch (Exception ex)
+            {
+                throw;
             }
         }
 
