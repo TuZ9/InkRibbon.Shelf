@@ -2,6 +2,7 @@
 {
     public interface IServiceClientBase<TEntity> where TEntity : class
     {
+        Task<Dictionary<string, TEntity>> GetVariableAsync(string url);
         Task<TEntity> GetAsync(string url);
         Task<IEnumerable<TEntity?>> GetListAsync(string url);
         Task PostAsync(string url, TEntity obj);

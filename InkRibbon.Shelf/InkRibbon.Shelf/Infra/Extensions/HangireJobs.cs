@@ -12,7 +12,8 @@ namespace InkRibbon.Shelf.Infra.Extensions
         {
             using var scope = services.CreateScope();
             var service = scope.ServiceProvider.GetRequiredService<ISteamGamesService>();
-            await service.PublishGames();
+            //await service.PublishGames();
+            await service.ConsumeGames();
             //BackgroundJob.Enqueue(() => service.BuildBase());
         }
     }

@@ -23,29 +23,42 @@ namespace InkRibbon.Shelf.Application.Services
 
         public async Task ConsumeGames()
         {
-            var factory = new ConnectionFactory() { HostName = "localhost", UserName = "guest", Password = "guest", Port = 5672 };
-            using (var connection = await factory.CreateConnectionAsync())
-            using (var channel = await connection.CreateChannelAsync())
+            try
             {
-                await channel.QueueDeclareAsync(queue: "fila.teste",
-                                                durable: true,
-                                                exclusive: false,
-                                                autoDelete: false,
-                                                arguments: null);
-
-                var consumer = new AsyncEventingBasicConsumer(channel);
-                consumer.ReceivedAsync += async (model, ea) =>
+                var factory = new ConnectionFactory() { HostName = "localhost", UserName = "guest", Password = "guest", Port = 5672 };
+                using (var connection = await factory.CreateConnectionAsync())
+                using (var channel = await connection.CreateChannelAsync())
                 {
-                    var body = ea.Body.ToArray();
-                    var mensagem = Encoding.UTF8.GetString(body);
-                    var msg = JsonSerializer.Deserialize<Apps>(mensagem);
 
-                    Console.WriteLine($"[x] Mensagem recebida: {mensagem}");
-                };
+                    await channel.QueueDeclareAsync(queue: "fila.teste",
+                                                                    durable: true,
+                                                                    exclusive: false,
+                                                                    autoDelete: false,
+                                                                    arguments: null);
+                    await channel.BasicQosAsync(prefetchSize: 0, prefetchCount: 10, global: false);
+                    var consumer = new AsyncEventingBasicConsumer(channel);
+                    consumer.ReceivedAsync += async (model, ea) =>
+                    {
+                        var body = ea.Body.ToArray();
+                        var mensagem = Encoding.UTF8.GetString(body);
+                        var msg = JsonSerializer.Deserialize<Apps>(mensagem);
 
-                await channel.BasicConsumeAsync(queue: "fila.teste",
-                                        autoAck: true,  
-                                        consumer: consumer);
+                        Console.WriteLine($"[x] Mensagem recebida: {mensagem}");
+                        var game = await _steamGamesClient.GetVariableAsync($"/api/appdetails?appids={msg.appid}");
+                        var a = game;
+                        await channel.BasicAckAsync(deliveryTag: ea.DeliveryTag, multiple: false);
+                    };
+
+                    await channel.BasicConsumeAsync(queue: "fila.teste",
+                                            autoAck: true,
+                                            consumer: consumer);
+
+
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -63,6 +76,9 @@ namespace InkRibbon.Shelf.Application.Services
                                                 exclusive: false,
                                                 autoDelete: false,
                                                 arguments: null);
+                    var i = 0;
+                    //while (i<=15)
+                    //{
                     foreach (var g in user.applist.apps)
                     {
                         var body = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(g));
@@ -70,8 +86,13 @@ namespace InkRibbon.Shelf.Application.Services
                         await channel.BasicPublishAsync(exchange: "",
                                                     routingKey: "fila.teste",
                                                     body: body);
-                        _logger.LogInformation($"Messagem publicada Serilog {JsonSerializer.Serialize(g)}");
+                        //_logger.LogInformation($"Messagem publicada Serilog {JsonSerializer.Serialize(g)}");
                     }
+                    i++;
+                    //}
+
+
+
                 }
             }
             catch (Exception)
